@@ -1,0 +1,7 @@
+flask
+flask-cors
+requests
+pymongo[srv]
+python-dotenv
+gunicorn
+urllib3
