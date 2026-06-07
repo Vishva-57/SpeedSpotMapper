@@ -16,20 +16,30 @@ load_dotenv()
 # Ultimate bypass for local SSL certificate issues on Windows/Python
 unverified_ctx = ssl._create_unverified_context()
 
-app = Flask(__name__, static_folder='.', static_url_path='')
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__, static_folder=basedir, static_url_path='')
 CORS(app)
 
 @app.route('/')
 def index():
-    return send_file('index.html')
+    return send_file(os.path.join(basedir, 'index.html'))
 
 # Database Configuration
-basedir = os.path.abspath(os.path.dirname(__file__))
 db_url = os.getenv('DATABASE_URL')
 if db_url and db_url.startswith("postgres://"):
     # SQLAlchemy requires postgresql:// instead of postgres://
     db_url = db_url.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url or 'sqlite:///' + os.path.join(basedir, 'speedspot_v4.db')
+
+# On serverless environments like Vercel, the filesystem is read-only.
+# Fallback to an in-memory SQLite database if no cloud database is provided.
+if not db_url:
+    if os.getenv('VERCEL') == '1':
+        db_url = 'sqlite:///:memory:'
+    else:
+        db_url = 'sqlite:///' + os.path.join(basedir, 'speedspot_v4.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
