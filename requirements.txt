@@ -6,3 +6,4 @@ python-dotenv
 gunicorn
 urllib3
 flask-sqlalchemy
+psycopg2-binary

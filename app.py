@@ -25,7 +25,11 @@ def index():
 
 # Database Configuration
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'speedspot_v4.db')
+db_url = os.getenv('DATABASE_URL')
+if db_url and db_url.startswith("postgres://"):
+    # SQLAlchemy requires postgresql:// instead of postgres://
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url or 'sqlite:///' + os.path.join(basedir, 'speedspot_v4.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
