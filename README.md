@@ -1,5 +1,7 @@
 # SpeedSpot Mapper 📡📍
 
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20on%20Vercel-blue?style=for-the-badge&logo=vercel)](https://speed-spot-mapper.vercel.app/)
+
 SpeedSpot Mapper is a smart city internet speed mapping and navigation utility designed to help users map network speeds, identify the best internet service providers (ISPs) in their area, and navigate to local "optimal signal spots" to get the fastest download and upload rates.
 
 Developed with a premium, sleek glassmorphic UI, it provides real-time speed indicators, historical speed mapping on Google Maps, and navigation guides.
